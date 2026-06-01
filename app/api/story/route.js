@@ -46,12 +46,16 @@ export async function POST(req) {
     const data = JSON.parse(response.text);
     return new Response(JSON.stringify(data), { status: 200 });
 
-  } catch (error) {
+} catch (error) {
     console.error("API Error:", error);
+    
+    // Vi udtrækker den specifikke fejlbesked fra Google
+    const exactError = error.message || "Ukendt fejl fra Google.";
+    
     return new Response(JSON.stringify({ 
       error: true, 
-      story: "Der opstod en fejl med API-forbindelsen. Tjek at din API-nøgle på Vercel er rigtig og aktiv.", 
-      choices: ["Prøv igen"] 
+      story: `⚠️ Google API Fejl: ${exactError}\n\nHvis fejlen handler om "Safety" eller "Blocked", blev historien for voldsom/eksplicit for Googles filtre. Hvis det er "429" eller "Quota", skal du vente et minut.`, 
+      choices: ["Prøv at skrive en anden handling"] 
     }), { status: 500 });
   }
 }
