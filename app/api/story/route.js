@@ -20,7 +20,7 @@ export async function POST(req) {
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash', // <-- Dette er den rigtige, stabile model
+      model: 'gemini-2.5-flash', // <-- Dette er den rigtige, stabile model
       contents: promptText,
       config: {
         systemInstruction: systemInstruction,
