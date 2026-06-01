@@ -21,7 +21,7 @@ export async function POST(req) {
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash', // <-- Her var fejlen! Nu bruger vi den rigtige model
+      model: 'gemini-3.1-flash-lite', // <-- Her var fejlen! Nu bruger vi den rigtige model
       contents: promptText,
       config: {
         systemInstruction: systemInstruction,
