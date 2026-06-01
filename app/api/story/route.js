@@ -1,6 +1,8 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Sikrer os at vi ikke crasher, hvis nøglen helt mangler
+const apiKey = process.env.GEMINI_API_KEY || "MANGLER_NØGLE";
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export async function POST(req) {
   try {
@@ -19,7 +21,7 @@ export async function POST(req) {
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash', // <-- Her var fejlen! Nu bruger vi den rigtige model
       contents: promptText,
       config: {
         systemInstruction: systemInstruction,
@@ -47,6 +49,11 @@ export async function POST(req) {
 
   } catch (error) {
     console.error("API Error:", error);
-    return new Response(JSON.stringify({ error: "Kunne ikke generere historie." }), { status: 500 });
+    // Vi sender en pæn fejl tilbage i stedet for at crashe
+    return new Response(JSON.stringify({ 
+      error: true, 
+      story: "Der opstod en fejl med API-forbindelsen. Tjek at din API-nøgle på Vercel er rigtig og aktiv.", 
+      choices: ["Prøv igen"] 
+    }), { status: 500 });
   }
 }
