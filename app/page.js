@@ -1,21 +1,18 @@
-// app/page.js
 "use client";
 import { useState, useRef, useEffect } from "react";
 
 export default function Home() {
   const [theme, setTheme] = useState("Et cyberpunk mysterie i år 2084");
-  const [history, setHistory] = useState([]); // Historikken der sendes til AI'en
-  const [storyLog, setStoryLog] = useState([]); // Historikken der vises på skærmen
+  const [history, setHistory] = useState([]); 
+  const [storyLog, setStoryLog] = useState([]); 
   const [choices, setChoices] = useState([]);
   const [customInput, setCustomInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
 
-  // Reference til at auto-scrolle til bunden
   const endOfStoryRef = useRef(null);
 
   useEffect(() => {
-    // Scroll blødt ned til bunden, når der kommer ny tekst eller valg
     endOfStoryRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [storyLog, choices, loading]);
 
@@ -23,7 +20,6 @@ export default function Home() {
     setLoading(true);
     setChoices([]); 
     
-    // Hvis spillet allerede er i gang, viser vi brugerens valg på skærmen
     if (gameStarted) {
       setStoryLog((prev) => [...prev, { role: "user", content: choiceText }]);
     }
@@ -41,16 +37,23 @@ export default function Home() {
 
       const data = await response.json();
       
-      // Opdater både den usynlige API-historik og den synlige UI-historik
+      // Sikkerhedsventil: Hvis der er en API-fejl
+      if (!response.ok || data.error) {
+        setStoryLog((prev) => [...prev, { role: "ai", content: `⚠️ Systemfejl: ${data.story || "Kunne ikke forbinde til AI."}` }]);
+        setChoices(data.choices || []);
+        setGameStarted(true);
+        setLoading(false);
+        return;
+      }
+      
       setHistory((prev) => [...prev, `Brugeren valgte: ${choiceText}`, data.story]);
       setStoryLog((prev) => [...prev, { role: "ai", content: data.story }]);
-      
       setChoices(data.choices);
       setGameStarted(true);
 
     } catch (error) {
       console.error(error);
-      setStoryLog((prev) => [...prev, { role: "ai", content: "Der opstod en fejl i forbindelsen til Game Masteren." }]);
+      setStoryLog((prev) => [...prev, { role: "ai", content: "⚠️ Der opstod en kritisk fejl i netværket." }]);
     } finally {
       setLoading(false);
       setCustomInput("");
@@ -66,18 +69,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-gray-100 flex flex-col font-sans">
-      {/* Top Navigation */}
       <header className="w-full p-6 border-b border-gray-800/60 bg-[#0a0a0f]/80 backdrop-blur-md sticky top-0 z-10">
         <h1 className="text-2xl font-black text-center tracking-wide bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent uppercase">
           AI Storyweaver
         </h1>
       </header>
 
-      {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
         <div className="max-w-3xl mx-auto w-full">
           
-          {/* Startskærm */}
           {!gameStarted && (
             <div className="mt-12 bg-gray-900/50 border border-gray-800 p-8 rounded-2xl shadow-2xl">
               <h2 className="text-xl font-semibold mb-6 text-gray-200">Start et nyt eventyr</h2>
@@ -101,7 +101,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Selve Historien */}
           {gameStarted && (
             <div className="space-y-8 pb-8">
               {storyLog.map((msg, index) => (
@@ -122,7 +121,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading Animation */}
           {loading && (
             <div className="flex items-center gap-3 text-indigo-400 font-medium my-8 p-4 bg-indigo-950/20 rounded-xl border border-indigo-900/30 w-fit">
               <svg className="animate-spin h-5 w-5 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -133,7 +131,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Valgmuligheder i bunden */}
           {!loading && choices.length > 0 && (
             <div className="mt-12 pt-8 border-t border-gray-800/60">
               <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Træf dit valg</h3>
@@ -169,7 +166,6 @@ export default function Home() {
             </div>
           )}
           
-          {/* Usynligt element til auto-scroll */}
           <div ref={endOfStoryRef} className="h-4"></div>
         </div>
       </div>
