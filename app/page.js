@@ -37,7 +37,6 @@ export default function Home() {
 
       const data = await response.json();
       
-      // Sikkerhedsventil: Hvis der er en API-fejl
       if (!response.ok || data.error) {
         setStoryLog((prev) => [...prev, { role: "ai", content: `⚠️ Systemfejl: ${data.story || "Kunne ikke forbinde til AI."}` }]);
         setChoices(data.choices || []);
