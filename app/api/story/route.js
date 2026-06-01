@@ -8,7 +8,7 @@ export async function POST(req) {
     const { theme, history, currentChoice } = body;
 
     const systemInstruction = `Du er en interaktiv historiefortæller og Game Master. Temaet for denne verden er: ${theme}. 
-    Skriv den næste del af historien baseret på brugerens valg. Gør det ekstremt fængende, detaljeret, med fokus på sanser, væsker, atmosfære og tag dig god tid (skriv mindst 3 lange afsnit).
+    Skriv den næste del af historien baseret på brugerens valg. Gør det ekstremt fængende, detaljeret, med fokus på sanser, atmosfære og tag dig god tid (skriv mindst 3 lange afsnit).
     Giv derefter præcis 4 spændende, varierede og kreative valgmuligheder for, hvad brugeren kan gøre som det næste.`;
 
     const promptText = `
