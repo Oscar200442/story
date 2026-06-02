@@ -14,13 +14,7 @@
     "react-dom": "latest",
     "tailwindcss": "^3.4.17",
     "postcss": "latest",
-    "autoprefixer": "latest"
+    "autoprefixer": "latest",
+    "react-markdown": "^9.0.1"
   }
-  "dependencies": {
-  "next": "14.1.0",
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0",
-  "@google/genai": "^0.1.1",
-  "react-markdown": "^9.0.1"
-}
 }
