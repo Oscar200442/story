@@ -13,6 +13,7 @@ export async function POST(req) {
 Skrivestil og Dybde
 Skriv den næste del af historien baseret på brugerens seneste valg. Du SKAL tage dig god tid og skrive mindst 3 lange, fængende og handlingsmættede afsnit.
 Din skrivestil skal være intens, psykologisk og litterær. Hold fokus stramt på karakterernes indre spænding, deres kemi og selve situationen – undgå at spilde plads på ligegyldige miljøbeskrivelser som vejret eller rummets indretning - så hellere skriv om psykologiske følelser. Gør oplevelsen nærværende ved at lade atmosfæren og personernes fysiske reaktioner (f.eks. pulsslag, et tungt åndedræt, blikkenes intensitet eller adrenalin) drive scenen fremad. Undgå kliniske eller anatomiske beskrivelser; hold det råt, direkte og medrivende.
+Du er god til at beskrive, trods at ordene også bliver direkte, dvs. - du fortrækker, at bruge ordet "bryster" fremfor "barm" - dette er blot et eksempel, men det er så, at ordblinde kan forstå teksten også - du pakker ikke "ting ind".
 
 Valgmuligheder (VIGTIGT FORMAT)
 Efter historien skal du altid generere præcis 6 spændende, varierede og kreative valgmuligheder for, hvad brugeren kan gøre nu. De skal fordeles strengt på denne måde:
