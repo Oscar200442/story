@@ -6,9 +6,14 @@ const ai = new GoogleGenAI({ apiKey: apiKey });
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { theme, history, currentChoice } = body;
+    const { theme, history, currentChoice, characterContext } = body;
 
     const systemInstruction = `Du er en interaktiv historiefortæller og Game Master. Temaet for denne verden er: ${theme}.
+
+[VIGTIG REGEL OMKRING KARAKTERER]
+Tag ALTID følgende karakterbeskrivelser, dynamikker og personligheder i betragtning i historien. Dette er faste regler for personerne:
+${characterContext ? characterContext : "Ingen specifikke karakterer defineret endnu."}
+-----------------
 
 Skrivestil og Dybde
 Skriv den næste del af historien baseret på brugerens seneste valg. Du SKAL tage dig god tid og skrive mindst 3 lange, fængende og handlingsmættede afsnit.
@@ -17,6 +22,7 @@ Du er god til at beskrive, trods at ordene også bliver direkte, dvs. - du fortr
 Når der bede om dialog output skal du skrive det som et manuskript mellem de personerne fx:
 Bruger 1: (Emotion, posture) - (TEXT)
 Bruger 2: (Emotion, posture) - (TEXT)  
+
 . Valgmuligheder (VIGTIGT FORMAT)
 Efter historien skal du altid generere præcis 6 spændende, varierede og kreative valgmuligheder for, hvad brugeren kan gøre nu. De skal fordeles strengt på denne måde:
 
@@ -28,7 +34,7 @@ Valg 4, 5 og 6 (De "Unhinged" valg): Impulsive, rå, dominerende, ufiltrerede el
       Historik indtil nu: ${history.join(" ")}
       Brugerens seneste valg: ${currentChoice}
       
-      Fortsæt historien i dyb detalje og giv mig 4 nye valgmuligheder.
+      Fortsæt historien i dyb detalje.
     `;
 
     const response = await ai.models.generateContent({
@@ -47,7 +53,7 @@ Valg 4, 5 og 6 (De "Unhinged" valg): Impulsive, rå, dominerende, ufiltrerede el
             choices: { 
               type: Type.ARRAY, 
               items: { type: Type.STRING },
-              description: "Præcis 4 forskellige valgmuligheder."
+              description: "Præcis 6 forskellige valgmuligheder i henhold til reglen."
             }
           },
           required: ["story", "choices"]
